@@ -16,9 +16,9 @@ Route::resourceVerbs([
     'edit' => 'editar'
 ]);
 
-Route::get('/', function () {
+/* Route::get('/', function () {
     return view('welcome');
-});
+}); */
 
 //Route::view('/form', 'form');
 
@@ -213,4 +213,35 @@ Route::get('/', function () {
 
 //Route::get('/users/{id}/comments/{comment?}', 'UserController@userComments')->where(['id' => '[0-9]+', 'comment' => '[a-zA-Z]+']);
 
-Route::get('/users/1','UserController@inspect')->name('inspect');
+//Route::get('/users/1','UserController@inspect')->name('inspect');
+/**
+ *
+ * Link da documentação de referência: https://laravel.com/docs/5.7/routing#named-routes
+ *
+ * Inspecionamento
+ *
+ * Permite que você resgate qual é a rota atual, o nome definido para a rota e a ação.
+ * A ação não pode ser uma closure, pois caso seja o retorno do método será null.
+ *
+ */
+
+ /* Route::prefix('admin')->group(function(){
+    Route::view('/form', 'form');
+ });
+
+ Route::name('admin.posts.')->group(function(){
+    Route::get('/admin/posts/index', 'PostController@index')->name('index');
+    Route::get('/admin/posts', 'PostController@show')->name('show');
+});
+
+Route::middleware(['throttle:10, 10, 1'])->group(function () {
+    Route::view('/form', 'form');
+});
+
+Route::namespace('Admin')->group(function(){
+    Route::get('/users', 'UserController@index');
+});
+ */
+Route::group(['namespace' => 'Admin','prefix' => 'admin','middleware' => ['throttle:10, 10, 1'],'as' => 'admin.'], function(){
+    Route::resource('user', 'UserController');
+});
