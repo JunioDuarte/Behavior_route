@@ -1,21 +1,17 @@
 <?php
 
-/*
-|--------------------------------------------------------------------------
-| Web Routes
-|--------------------------------------------------------------------------
-|
-| Here is where you can register web routes for your application. These
-| routes are loaded by the RouteServiceProvider within a group which
-| contains the "web" middleware group. Now create something great!
-|
-*/
+Route::resourceVerbs([
+    'create' => 'cadastro',
+    'edit' => 'editar'
+
+
+]);
 
 Route::get('/', function () {
     return view('welcome');
 });
 
-Route::view('/form', 'form');
+//Route::view('/form', 'form');
 
 /*
     Route::verbo_html('URI','Controller@método');
@@ -50,31 +46,57 @@ Route::view('/form', 'form');
     Route::options($uri, $callback);
 */
 
+/*
+    GET
+        Route::get('/users/1','UserController@index');
+        Route::get('/getData','UserController@getData');
 
-/**GET */
-Route::get('/users/1','UserController@index');
-Route::get('/getData','UserController@getData');
-
-
-/**POST */
-Route::post('/postData','UserController@postData');
-
-
-/**PUT */
-Route::put('/users/1','UserController@testPut');
+    POST
+        Route::post('/postData','UserController@postData');
 
 
-/**PATCH */
-Route::patch('/users/1', 'UserController@testPatch');
+    PUT
+        Route::put('/users/1','UserController@testPut');
+
+    ATCH
+        Route::patch('/users/1', 'UserController@testPatch');
+
+    PUT/PATCH
+        Route::match(['put', 'patch'], '/users/2', 'UserController@testMatch');
 
 
-/**PUT/PATCH */
-Route::match(['put', 'patch'], '/users/2', 'UserController@testMatch');
+    DELETE
+        Route::delete('/users/1', 'UserController@destroy');
 
 
-/**DELETE */
-Route::delete('/users/1', 'UserController@destroy');
+    ANY
+        Route::any('/users', 'UserController@any');
+
+ */
+
+ /*
+
+    Route::get('/posts/premium', 'PostController@premium');
+    Route::resource('posts', 'PostController')->only(['index', 'show']); Somente index e show
+    Route::resource('posts', 'PostController')->except(['destroy']); //Exeto destroy
+    Route::get('/posts', 'PostController@index');
+
+ */
 
 
-/**ANY */
-Route::any('/users', 'UserController@any');
+//Route::get('/users', 'UserController@show');
+
+Route::get('/users',function(){
+    echo "Listagem dos usuários da minha base!";
+});
+
+Route::view('/form', 'form');
+
+Route::fallback(function(){
+    echo "<h1>Ooops!! Seja muito bem vindo a nessa página 404. Nenhum registro foi encontrado.</h1>";
+});
+
+Route::redirect('/users/add', url('/form'),301);
+
+Route::get('/artigos', 'Postcontroller@index')->name('posts.index');
+Route::get('/artigos/index', 'Postcontroller@indexRedirect')->name('posts.indexRedirect');
